@@ -9,6 +9,7 @@ const FAQItem = ({ id, question, answer }) => {
   return (
     <div className={cn('faq-item', isOpen && 'faq-item--open')}>
       <button
+        id={`faq-trigger-${id}`}
         className="faq-item__trigger"
         onClick={() => setIsOpen(prev => !prev)}
         aria-expanded={isOpen}

@@ -12,8 +12,11 @@ const BenefitsSection = () => (
       </div>
 
       <div className="benefits__grid">
-        {BENEFITS.map(({ icon, title, description }) => (
+        {BENEFITS.map(({ icon, title, description }, i) => (
           <div key={title} className="benefits__card">
+            <span className="benefits__number" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
             <div className="benefits__icon" aria-hidden="true">{icon}</div>
             <h3 className="benefits__title">{title}</h3>
             <p className="benefits__desc">{description}</p>

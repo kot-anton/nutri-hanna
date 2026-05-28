@@ -34,3 +34,7 @@ yarn-error.log*
 # Cache
 .cache/
 .parcel-cache/
+
+# Claude Code / agent tooling
+.agents/
+skills-lock.json

@@ -81,8 +81,9 @@
   --color-warning: #C4903A;
 
   /* ── TYPOGRAPHY ──────────────────────────────────────────────── */
-  --font-serif: 'Cormorant Garamond', 'Georgia', serif;
-  --font-sans:  'Inter', system-ui, sans-serif;
+  --font-serif:   'Cormorant Garamond', 'Georgia', serif;
+  --font-sans:    'Jost', system-ui, sans-serif;
+  --font-display: 'Syne', system-ui, sans-serif;
 
   --text-xs:   0.75rem;
   --text-sm:   0.875rem;
@@ -120,6 +121,7 @@
   --sp-4:  1rem;
   --sp-5:  1.25rem;
   --sp-6:  1.5rem;
+  --sp-7:  1.75rem;
   --sp-8:  2rem;
   --sp-10: 2.5rem;
   --sp-12: 3rem;

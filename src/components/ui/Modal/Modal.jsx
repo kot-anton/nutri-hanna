@@ -8,10 +8,26 @@ const Modal = ({ isOpen, onClose, title, size = 'md', className = '', children }
 
   useEffect(() => {
     if (!isOpen) return
-    const firstFocusable = backdropRef.current?.querySelector(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    )
-    firstFocusable?.focus()
+    const el = backdropRef.current
+    const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    const getFocusable = () => Array.from(el?.querySelectorAll(FOCUSABLE) ?? [])
+
+    getFocusable()[0]?.focus()
+
+    const handleTab = (e) => {
+      if (e.key !== 'Tab') return
+      const nodes = getFocusable()
+      const first = nodes[0]
+      const last  = nodes[nodes.length - 1]
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus() }
+      } else {
+        if (document.activeElement === last)  { e.preventDefault(); first?.focus() }
+      }
+    }
+
+    el?.addEventListener('keydown', handleTab)
+    return () => el?.removeEventListener('keydown', handleTab)
   }, [isOpen])
 
   if (!isOpen) return null

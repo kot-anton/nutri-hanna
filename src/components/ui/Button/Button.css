@@ -5,22 +5,22 @@
   gap: var(--sp-2);
   font-family: var(--font-sans);
   font-weight: var(--fw-medium);
-  letter-spacing: var(--ls-wide);
-  border-radius: var(--r-full);
+  letter-spacing: 0.05em;
   cursor: pointer;
   white-space: nowrap;
   transition: background var(--t-normal), color var(--t-normal),
               border-color var(--t-normal), box-shadow var(--t-normal),
-              transform var(--t-fast);
+              transform var(--t-spring);
   position: relative;
   text-decoration: none;
+  border-radius: var(--r-full);
 }
 
 /* ── SIZES ──────────────────────────────────────────────────────── */
 
-.btn--sm { font-size: var(--text-sm); padding: var(--sp-2) var(--sp-5); }
-.btn--md { font-size: var(--text-sm); padding: var(--sp-3) var(--sp-8); }
-.btn--lg { font-size: var(--text-base); padding: var(--sp-4) var(--sp-10); }
+.btn--sm { font-size: 12px;            padding: var(--sp-2) var(--sp-5);  }
+.btn--md { font-size: var(--text-sm);  padding: var(--sp-3) var(--sp-7);  }
+.btn--lg { font-size: var(--text-sm);  padding: var(--sp-4) var(--sp-10); }
 
 /* ── VARIANTS ───────────────────────────────────────────────────── */
 
@@ -32,8 +32,11 @@
 .btn--primary:hover:not(.btn--disabled):not(.btn--loading) {
   background: var(--color-primary-hover);
   border-color: var(--color-primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(139, 99, 71, 0.28);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 99, 71, 0.30);
+}
+.btn--primary:active:not(.btn--disabled):not(.btn--loading) {
+  transform: translateY(0);
 }
 
 .btn--secondary {
@@ -44,8 +47,8 @@
 .btn--secondary:hover:not(.btn--disabled):not(.btn--loading) {
   background: var(--color-accent-hover);
   border-color: var(--color-accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(78, 117, 84, 0.28);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(78, 117, 84, 0.30);
 }
 
 .btn--outline {
@@ -65,7 +68,7 @@
 }
 .btn--ghost:hover:not(.btn--disabled):not(.btn--loading) {
   background: var(--color-bg-section);
-  border-color: var(--color-border);
+  border-color: var(--brown-200);
 }
 
 .btn--text {
@@ -75,17 +78,33 @@
   padding-left: 0;
   padding-right: 0;
   border-radius: 0;
+  letter-spacing: 0.06em;
 }
 .btn--text:hover:not(.btn--disabled):not(.btn--loading) {
   color: var(--color-primary-hover);
 }
+.btn--text::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--color-primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t-normal);
+}
+.btn--text:hover::after {
+  transform: scaleX(1);
+}
 
 /* ── STATES ─────────────────────────────────────────────────────── */
 
-.btn--full    { width: 100%; }
+.btn--full { width: 100%; }
 
 .btn--disabled,
-.btn--loading { opacity: 0.6; cursor: not-allowed; pointer-events: none; }
+.btn--loading { opacity: 0.55; cursor: not-allowed; pointer-events: none; }
 
 /* ── SPINNER ────────────────────────────────────────────────────── */
 
@@ -93,10 +112,11 @@
   display: inline-block;
   width: 14px;
   height: 14px;
-  border: 2px solid currentColor;
+  border: 1.5px solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  animation: spin 0.65s linear infinite;
+  opacity: 0.8;
 }
 
 /* ── ICON ───────────────────────────────────────────────────────── */
