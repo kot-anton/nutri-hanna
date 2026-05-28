@@ -2,13 +2,19 @@ import { useEffect, useRef } from 'react'
 import Button from '@components/ui/Button/Button'
 import Badge from '@components/ui/Badge/Badge'
 import { scrollToSection } from '@utils/helpers'
+import heroDish from '@assets/hero-dish.png'
 import './HeroSection.css'
 
 const STATS = [
   { value: '500+',  label: 'клиентов' },
   { value: '5',     label: 'лет опыта' },
-  { value: '98%',   label: 'довольны результатом' },
-  { value: '12+',   label: 'программ питания' },
+  { value: '98%',   label: 'результат' },
+  { value: '12+',   label: 'программ' },
+]
+
+const MARQUEE_ITEMS = [
+  'Научный подход', 'Без жёстких диет', 'Индивидуально', 'Устойчивый результат',
+  'Научный подход', 'Без жёстких диет', 'Индивидуально', 'Устойчивый результат',
 ]
 
 const HeroSection = ({ onBookingOpen }) => {
@@ -21,7 +27,7 @@ const HeroSection = ({ onBookingOpen }) => {
     if (!content || !image) return
 
     const t1 = setTimeout(() => content.classList.add('hero__content--visible'), 100)
-    const t2 = setTimeout(() => image.classList.add('hero__image-col--visible'), 350)
+    const t2 = setTimeout(() => image.classList.add('hero__image-col--visible'), 380)
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
@@ -34,6 +40,8 @@ const HeroSection = ({ onBookingOpen }) => {
           <Badge variant="accent" size="md" className="hero__badge">
             Сертифицированный нутрициолог
           </Badge>
+
+          <span className="hero__title-rule" aria-hidden="true" />
 
           <h1 className="hero__title">
             Твой путь<br />
@@ -59,8 +67,12 @@ const HeroSection = ({ onBookingOpen }) => {
 
         <div ref={imageRef} className="hero__image-col">
           <div className="hero__image-wrap">
-            <div className="hero__image-placeholder" aria-label="Фото Ханны">
-              <div className="hero__image-initials">ХН</div>
+            <div className="hero__image-placeholder" aria-label="Нутрициология">
+              <img
+                src={heroDish}
+                alt="Полезное и красивое блюдо — символ здорового питания"
+                className="hero__dish-img"
+              />
             </div>
             <div className="hero__floating-card hero__floating-card--top" aria-hidden="true">
               <span className="hero__floating-icon">🌿</span>
@@ -77,6 +89,17 @@ const HeroSection = ({ onBookingOpen }) => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="hero__marquee" aria-hidden="true">
+        <div className="hero__marquee-track">
+          {MARQUEE_ITEMS.map((item, i) => (
+            <span key={i} className="hero__marquee-item">
+              {item}
+              <span className="hero__marquee-dot" />
+            </span>
+          ))}
         </div>
       </div>
 

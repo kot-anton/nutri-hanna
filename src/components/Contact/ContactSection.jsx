@@ -34,7 +34,7 @@ const CONTACT_DETAILS = [
     ),
     label: 'Telegram',
     value: CONTACTS.telegram,
-    href:  '#',
+    href:  `https://t.me/${CONTACTS.telegram.replace('@', '')}`,
   },
 ]
 
