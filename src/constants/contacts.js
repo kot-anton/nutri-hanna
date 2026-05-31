@@ -1,6 +1,4 @@
 export const CONTACTS = {
-  phone:     '+380 99 123 45 67',
-  email:     'hanna@nutritionist.com',
-  instagram: '@hanna.nutrition',
-  telegram:  '@hanna_nutrition',
+  instagram: 'https://www.instagram.com/i.am.hanna___?igsh=MTAzcmhpNXg1MDRzeg==',
+  telegram: 'https://t.me/Hanna_An',
 }

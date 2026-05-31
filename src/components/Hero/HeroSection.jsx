@@ -5,30 +5,23 @@ import { scrollToSection } from '@utils/helpers'
 import heroDish from '@assets/hero-dish.png'
 import './HeroSection.css'
 
-const STATS = [
-  { value: '500+',  label: 'клиентов' },
-  { value: '5',     label: 'лет опыта' },
-  { value: '98%',   label: 'результат' },
-  { value: '12+',   label: 'программ' },
-]
-
-const MARQUEE_ITEMS = [
-  'Научный подход', 'Без жёстких диет', 'Индивидуально', 'Устойчивый результат',
-  'Научный подход', 'Без жёстких диет', 'Индивидуально', 'Устойчивый результат',
-]
+const MARQUEE_ITEMS = ['Без жёстких диет', 'Индивидуально', 'Устойчивый результат', 'Научный подход']
 
 const HeroSection = ({ onBookingOpen }) => {
   const contentRef = useRef(null)
-  const imageRef   = useRef(null)
+  const imageRef = useRef(null)
 
   useEffect(() => {
     const content = contentRef.current
-    const image   = imageRef.current
+    const image = imageRef.current
     if (!content || !image) return
 
     const t1 = setTimeout(() => content.classList.add('hero__content--visible'), 100)
     const t2 = setTimeout(() => image.classList.add('hero__image-col--visible'), 380)
-    return () => { clearTimeout(t1); clearTimeout(t2) }
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+    }
   }, [])
 
   return (
@@ -44,14 +37,15 @@ const HeroSection = ({ onBookingOpen }) => {
           <span className="hero__title-rule" aria-hidden="true" />
 
           <h1 className="hero__title">
-            Твой путь<br />
-            к здоровью<br />
+            Твой путь
+            <br />
+            к здоровью
+            <br />
             <em>начинается здесь</em>
           </h1>
 
           <p className="hero__subtitle">
-            Персональная нутрициология для тех, кто хочет изменить качество
-            жизни навсегда. Без жёстких диет — только научный подход и
+            Персональная нутрициология для тех, кто хочет изменить качество жизни навсегда. Без жёстких диет - только научный подход и
             устойчивый результат.
           </p>
 
@@ -68,16 +62,12 @@ const HeroSection = ({ onBookingOpen }) => {
         <div ref={imageRef} className="hero__image-col">
           <div className="hero__image-wrap">
             <div className="hero__image-placeholder" aria-label="Нутрициология">
-              <img
-                src={heroDish}
-                alt="Полезное и красивое блюдо — символ здорового питания"
-                className="hero__dish-img"
-              />
+              <img src={heroDish} alt="Полезное и красивое блюдо — символ здорового питания" className="hero__dish-img" />
             </div>
             <div className="hero__floating-card hero__floating-card--top" aria-hidden="true">
               <span className="hero__floating-icon">🌿</span>
               <div>
-                <p className="hero__floating-title">Научный подход</p>
+                <p className="hero__floating-title">Персональный подход</p>
                 <p className="hero__floating-text">к каждому клиенту</p>
               </div>
             </div>
@@ -94,22 +84,11 @@ const HeroSection = ({ onBookingOpen }) => {
 
       <div className="hero__marquee" aria-hidden="true">
         <div className="hero__marquee-track">
-          {MARQUEE_ITEMS.map((item, i) => (
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
             <span key={i} className="hero__marquee-item">
-              {item}
               <span className="hero__marquee-dot" />
+              {item}
             </span>
-          ))}
-        </div>
-      </div>
-
-      <div className="hero__stats">
-        <div className="hero__stats-inner">
-          {STATS.map(({ value, label }) => (
-            <div key={label} className="hero__stat">
-              <span className="hero__stat-value">{value}</span>
-              <span className="hero__stat-label">{label}</span>
-            </div>
           ))}
         </div>
       </div>

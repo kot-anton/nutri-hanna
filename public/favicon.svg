@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <circle cx="16" cy="16" r="16" fill="#8B6347"/>
+  <text
+    x="16"
+    y="22"
+    font-family="'Cormorant Garamond', Georgia, serif"
+    font-size="15"
+    font-weight="400"
+    fill="#FAF4EC"
+    text-anchor="middle">HN</text>
+</svg>

@@ -52,6 +52,12 @@
   color: var(--color-primary);
   flex-shrink: 0;
   border: 1px solid var(--brown-100);
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+
+.contact__detail-icon:hover {
+  background: var(--color-primary-light);
+  border-color: var(--brown-200);
 }
 
 .contact__detail-label {
@@ -75,6 +81,7 @@
 .contact__detail-value:hover {
   color: var(--color-primary);
 }
+
 
 /* ── PROMISE ────────────────────────────────────────────────────── */
 

@@ -4,6 +4,13 @@
   gap: var(--sp-5);
 }
 
+.contact-form__error {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-error);
+  text-align: center;
+}
+
 .contact-form__row {
   display: grid;
   grid-template-columns: 1fr 1fr;
