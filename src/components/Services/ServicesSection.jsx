@@ -4,7 +4,7 @@ import ServiceCard from './ServiceCard'
 import { SERVICES } from './services.data'
 import './ServicesSection.css'
 
-const ServicesSection = ({ onBookingOpen }) => (
+const ServicesSection = ({ onPaymentOpen }) => (
   <Section id="services" background="default" className="services">
     <Container>
       <div className="services__header">
@@ -21,7 +21,7 @@ const ServicesSection = ({ onBookingOpen }) => (
           <ServiceCard
             key={service.id}
             service={service}
-            onBookingOpen={onBookingOpen}
+            onPaymentOpen={onPaymentOpen}
           />
         ))}
       </div>

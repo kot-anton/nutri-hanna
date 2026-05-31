@@ -3,7 +3,7 @@ import Button from '@components/ui/Button/Button'
 import Badge from '@components/ui/Badge/Badge'
 import './ServiceCard.css'
 
-const ServiceCard = ({ service, onBookingOpen }) => {
+const ServiceCard = ({ service, onPaymentOpen }) => {
   const { icon, title, description, features, price, duration, popular } = service
 
   return (
@@ -37,9 +37,9 @@ const ServiceCard = ({ service, onBookingOpen }) => {
         <Button
           variant={popular ? 'primary' : 'outline'}
           size="sm"
-          onClick={onBookingOpen}
+          onClick={() => onPaymentOpen?.(service)}
         >
-          Записаться
+          Pay
         </Button>
       </div>
     </article>
