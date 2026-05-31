@@ -43,11 +43,11 @@ const Modal = ({ isOpen, onClose, title, size = 'md', className = '', children }
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
-      aria-label={title}
+      aria-labelledby={title ? 'modal-title' : undefined}
     >
       <div className={cn('modal', `modal--${size}`, 'animate-scale-in', className)}>
         <div className="modal__header">
-          {title && <h2 className="modal__title">{title}</h2>}
+          {title && <h2 id="modal-title" className="modal__title">{title}</h2>}
           <button className="modal__close" onClick={onClose} aria-label="Закрыть">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>

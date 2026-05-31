@@ -1,0 +1,33 @@
+# ── Build ────────────────────────────────────────────────────────────────────
+[build]
+  command   = "npm run build"
+  publish   = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# ── Local dev (netlify dev) ───────────────────────────────────────────────────
+[dev]
+  framework = "vite"
+  envFile   = ".env.local"   # load Stripe keys for local function testing
+  port      = 8888
+
+# ── Rewrite /api/* → Netlify Functions (keeps frontend code unchanged) ────────
+[[redirects]]
+  from   = "/api/create-payment-intent"
+  to     = "/.netlify/functions/create-payment-intent"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from   = "/api/webhook"
+  to     = "/.netlify/functions/webhook"
+  status = 200
+  force  = true
+
+# ── SPA fallback — must be LAST (catches all unmatched routes → index.html) ──
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
