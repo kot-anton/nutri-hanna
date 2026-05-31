@@ -6,6 +6,7 @@ const useForm = (initialValues, validators = {}) => {
   const [touched,     setTouched]     = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted,  setIsSubmitted]  = useState(false)
+  const [submitError,  setSubmitError]  = useState(null)
 
   const validateField = useCallback((name, value) => {
     return validators[name]?.(value, values) ?? null
@@ -45,12 +46,15 @@ const useForm = (initialValues, validators = {}) => {
     if (Object.keys(errs).length > 0) return
 
     setIsSubmitting(true)
+    setSubmitError(null)
     try {
       await onSubmit(values)
       setIsSubmitted(true)
       setValues(initialValues)
       setTouched({})
       setErrors({})
+    } catch {
+      setSubmitError('Не удалось отправить заявку. Попробуйте ещё раз.')
     } finally {
       setIsSubmitting(false)
     }
@@ -63,7 +67,7 @@ const useForm = (initialValues, validators = {}) => {
     setIsSubmitted(false)
   }, [initialValues])
 
-  return { values, errors, touched, isSubmitting, isSubmitted, handleChange, handleBlur, handleSubmit, reset }
+  return { values, errors, touched, isSubmitting, isSubmitted, submitError, handleChange, handleBlur, handleSubmit, reset }
 }
 
 export default useForm

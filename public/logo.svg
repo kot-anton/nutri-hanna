@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 46" width="130" height="46">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond&amp;family=Syne:wght@600&amp;display=swap');
+  </style>
+  <text
+    x="65"
+    y="28"
+    font-family="'Cormorant Garamond', Georgia, serif"
+    font-size="24"
+    font-weight="400"
+    letter-spacing="-0.24"
+    fill="#2C2C2C"
+    text-anchor="middle">Hanna</text>
+  <text
+    x="64"
+    y="42"
+    font-family="'Syne', system-ui, sans-serif"
+    font-size="9"
+    font-weight="600"
+    letter-spacing="2.34"
+    fill="#8B6347"
+    text-anchor="middle">NUTRITION</text>
+</svg>
