@@ -98,7 +98,7 @@ const PaymentModal = ({ isOpen, onClose, service }) => {
   const handleSuccess = useCallback(() => setStatus('success'), [setStatus])
   const handleError   = useCallback((msg) => setError(msg), [setError])
 
-  const modalTitle = status === 'success' ? 'Оплата прошла успешно' : 'Оформление оплаты'
+  const modalTitle = status === 'success' ? 'Оплата успішна' : 'Оформлення оплати'
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title={modalTitle} size="md">
@@ -122,7 +122,7 @@ const PaymentModal = ({ isOpen, onClose, service }) => {
           {status === 'loading' && (
             <div className="payment-modal__loader">
               <span className="payment-modal__spinner" aria-hidden="true" />
-              <p>Подготовка формы оплаты…</p>
+              <p>Підготовка форми оплати…</p>
             </div>
           )}
 
@@ -143,7 +143,7 @@ const PaymentModal = ({ isOpen, onClose, service }) => {
                   initPayment(service.id, controller.signal)
                 }}
               >
-                Попробовать снова
+                Спробувати знову
               </button>
             </div>
           )}
@@ -154,7 +154,7 @@ const PaymentModal = ({ isOpen, onClose, service }) => {
               options={{
                 clientSecret,
                 appearance: STRIPE_APPEARANCE,
-                locale: 'ru',
+                locale: 'uk',
               }}
             >
               <PaymentForm

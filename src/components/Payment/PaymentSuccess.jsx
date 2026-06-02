@@ -16,18 +16,18 @@ const PaymentSuccess = ({ service, onClose }) => (
     </div>
 
     <div className="payment-success__content">
-      <h3 className="payment-success__title">Спасибо за оплату!</h3>
+      <h3 className="payment-success__title">Дякуємо за оплату!</h3>
       {service && (
         <p className="payment-success__service">«{service.title}»</p>
       )}
       <p className="payment-success__note">
-        Ханна свяжется с вами в течение&nbsp;24&nbsp;часов
-        и согласует удобное время для начала работы.
+        Ганна зв'яжеться з вами протягом&nbsp;24&nbsp;годин
+        та погодить зручний час для початку роботи.
       </p>
     </div>
 
     <Button variant="primary" size="md" fullWidth onClick={onClose}>
-      Отлично, до встречи!
+      Чудово, до зустрічі!
     </Button>
   </div>
 )

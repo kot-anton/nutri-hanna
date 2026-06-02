@@ -3,9 +3,8 @@ import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import Button from '@components/ui/Button/Button'
 
 // Maps ISO 3166-1 alpha-2 country codes to Stripe's supported locales.
-// Note: Stripe has no Ukrainian locale — 'ru' is used for UA/RU/CIS.
 const COUNTRY_TO_LOCALE = {
-  UA: 'ru', RU: 'ru', BY: 'ru', KZ: 'ru', UZ: 'ru', GE: 'ru',
+  UA: 'uk', RU: 'ru', BY: 'ru', KZ: 'ru', UZ: 'ru', GE: 'ru',
   US: 'en', CA: 'en', AU: 'en', NZ: 'en', IN: 'en', SG: 'en', ZA: 'en',
   GB: 'en-GB', IE: 'en-GB',
   DE: 'de', AT: 'de',
@@ -21,7 +20,16 @@ const COUNTRY_TO_LOCALE = {
   BR: 'pt-BR', MX: 'es-419', AR: 'es-419', CO: 'es-419',
 }
 
-const PaymentForm = ({ onSuccess, onError }) => {
+const formatPrice = (service) => {
+  if (!service?.amount) return service?.price ?? ''
+  return new Intl.NumberFormat('uk-UA', {
+    style:                 'currency',
+    currency:              'UAH',
+    maximumFractionDigits: 0,
+  }).format(service.amount / 100)
+}
+
+const PaymentForm = ({ service, onSuccess, onError }) => {
   const stripe       = useStripe()
   const elements     = useElements()
   const [processing, setProcessing] = useState(false)
@@ -56,7 +64,7 @@ const PaymentForm = ({ onSuccess, onError }) => {
     })
 
     if (error) {
-      const msg = error.message ?? 'Произошла ошибка. Попробуйте ещё раз.'
+      const msg = error.message ?? 'Сталася помилка. Спробуйте ще раз.'
       setLocalError(msg)
       onError?.(msg)
       setProcessing(false)
@@ -98,7 +106,7 @@ const PaymentForm = ({ onSuccess, onError }) => {
         loading={processing}
         disabled={!stripe || !elements || processing}
       >
-        {processing ? 'Обработка платежа…' : 'Pay'}
+        {processing ? 'Обробка платежу…' : `Сплатити ${formatPrice(service)}`}
       </Button>
 
       <p className="payment-form__secure">
@@ -106,7 +114,7 @@ const PaymentForm = ({ onSuccess, onError }) => {
           <rect x="0.75" y="5.25" width="9.5" height="7.25" rx="1.5" stroke="currentColor" strokeWidth="1.25" />
           <path d="M3 5.25V3.5a2.5 2.5 0 0 1 5 0v1.75" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
         </svg>
-        Защищено Stripe · данные карты не сохраняются
+        Захищено Stripe · дані карти не зберігаються
       </p>
     </form>
   )

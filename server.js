@@ -27,10 +27,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 // Amounts in the smallest currency unit (kopecks for UAH).
 // Defined server-side so the client cannot manipulate prices.
 const PACKAGES = {
-  consultation: { amount: 150000, currency: 'uah', name: 'Индивидуальная консультация' },
-  plan:         { amount: 350000, currency: 'uah', name: 'Персональный план питания' },
-  program:      { amount: 900000, currency: 'uah', name: 'Программа сопровождения' },
-  course:       { amount: 200000, currency: 'uah', name: 'Групповой курс' },
+  consultation: { amount: 150000, currency: 'uah', name: 'Індивідуальна консультація' },
+  plan:         { amount: 350000, currency: 'uah', name: 'Персональний план харчування' },
+  program:      { amount: 900000, currency: 'uah', name: 'Програма супроводу' },
+  course:       { amount: 200000, currency: 'uah', name: 'Груповий курс' },
 }
 
 // ── Webhook must receive the raw body BEFORE express.json() middleware ──────
@@ -120,7 +120,7 @@ app.post('/api/create-payment-intent', async (req, res) => {
     res.json({ clientSecret: intent.client_secret })
   } catch (err) {
     console.error('[create-payment-intent] Stripe error:', err.message)
-    res.status(500).json({ error: 'Не удалось инициализировать платёж. Попробуйте ещё раз.' })
+    res.status(500).json({ error: 'Не вдалося ініціалізувати платіж. Спробуйте ще раз.' })
   }
 })
 
