@@ -2,6 +2,15 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import Stripe from 'stripe'
+import nodemailer from 'nodemailer'
+
+const mailer = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.OWNER_EMAIL,
+    pass: process.env.OWNER_EMAIL_APP_PASSWORD,
+  },
+})
 
 const app  = express()
 const PORT = process.env.PORT || 3001
@@ -28,7 +37,7 @@ const PACKAGES = {
 app.post(
   '/api/webhook',
   express.raw({ type: 'application/json' }),
-  (req, res) => {
+  async (req, res) => {
     const sig = req.headers['stripe-signature']
 
     if (!process.env.STRIPE_WEBHOOK_SECRET) {
@@ -46,8 +55,36 @@ app.post(
 
     if (event.type === 'payment_intent.succeeded') {
       const intent = event.data.object
-      console.log(`[webhook] payment_intent.succeeded — id: ${intent.id}, package: ${intent.metadata.packageId}`)
-      // TODO: persist to database, trigger fulfillment email, etc.
+      const packageName = intent.metadata.packageName ?? intent.metadata.packageId ?? 'Unknown'
+      const amountFormatted = (intent.amount / 100).toFixed(2)
+      console.log(`[webhook] payment_intent.succeeded — id: ${intent.id}, package: ${packageName}`)
+
+      if (process.env.OWNER_EMAIL && process.env.OWNER_EMAIL_APP_PASSWORD) {
+        let customerName = 'not provided'
+        if (intent.latest_charge) {
+          try {
+            const charge = await stripe.charges.retrieve(intent.latest_charge)
+            customerName = charge.billing_details?.name ?? 'not provided'
+          } catch (err) {
+            console.warn('[webhook] Could not retrieve charge for billing details:', err.message)
+          }
+        }
+
+        mailer.sendMail({
+          from: process.env.OWNER_EMAIL,
+          to:   process.env.OWNER_EMAIL,
+          subject: `New payment received — ${packageName}`,
+          text: [
+            `A payment was successfully completed.`,
+            ``,
+            `Package:    ${packageName}`,
+            `Amount:     ${amountFormatted} ${intent.currency.toUpperCase()}`,
+            `Payment ID: ${intent.id}`,
+            `Customer:   ${customerName}`,
+            `Email:      ${intent.receipt_email ?? 'not provided'}`,
+          ].join('\n'),
+        }).catch(err => console.error('[webhook] Failed to send owner email:', err.message))
+      }
     }
 
     // Acknowledge quickly; Stripe retries if response takes > ~30 s

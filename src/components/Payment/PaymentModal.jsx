@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import Modal from '@components/ui/Modal/Modal'
@@ -27,6 +27,9 @@ const STRIPE_APPEARANCE = {
       border:    '1.5px solid #e8e1d7',
       boxShadow: 'none',
       padding:   '10px 14px',
+    },
+    '.Input::placeholder': {
+      color: '#c8c0b8',
     },
     '.Input:focus': {
       border:    '1.5px solid #8b6347',
@@ -69,6 +72,8 @@ const PaymentModal = ({ isOpen, onClose, service }) => {
     setError,
   } = usePayment()
 
+  const retryAbortRef = useRef(null)
+
   // Fetch a PaymentIntent whenever the modal opens for a service.
   // AbortController cancels the in-flight request if the modal closes early.
   useEffect(() => {
@@ -84,6 +89,8 @@ const PaymentModal = ({ isOpen, onClose, service }) => {
   }, [isOpen, service?.id, initPayment, reset])
 
   const handleClose = useCallback(() => {
+    retryAbortRef.current?.abort()
+    retryAbortRef.current = null
     reset()
     onClose()
   }, [reset, onClose])
@@ -129,10 +136,12 @@ const PaymentModal = ({ isOpen, onClose, service }) => {
               <button
                 className="payment-modal__retry"
                 onClick={() => {
-                if (!service) return
-                const controller = new AbortController()
-                initPayment(service.id, controller.signal)
-              }}
+                  if (!service) return
+                  retryAbortRef.current?.abort()
+                  const controller = new AbortController()
+                  retryAbortRef.current = controller
+                  initPayment(service.id, controller.signal)
+                }}
               >
                 Спробувати знову
               </button>

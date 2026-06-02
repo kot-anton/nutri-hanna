@@ -1,8 +1,8 @@
 export const NAV_LINKS = [
-  { label: 'Обо мне', href: 'about' },
-  { label: 'Как работаю', href: 'process' },
-  { label: 'Услуги', href: 'services' },
-  { label: 'Отзывы', href: 'testimonials' },
-  { label: 'FAQ', href: 'faq' },
-  { label: 'Контакт', href: 'contact' },
+  { label: 'Про мене',   href: 'about' },
+  { label: 'Як працюю', href: 'process' },
+  { label: 'Послуги',   href: 'services' },
+  { label: 'Відгуки',   href: 'testimonials' },
+  { label: 'FAQ',       href: 'faq' },
+  { label: 'Контакт',   href: 'contact' },
 ]

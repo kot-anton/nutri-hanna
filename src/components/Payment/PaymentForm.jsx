@@ -1,6 +1,24 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import Button from '@components/ui/Button/Button'
+
+// Maps ISO 3166-1 alpha-2 country codes to Stripe's supported locales.
+const COUNTRY_TO_LOCALE = {
+  UA: 'uk', RU: 'ru', BY: 'ru', KZ: 'ru', UZ: 'ru', GE: 'ru',
+  US: 'en', CA: 'en', AU: 'en', NZ: 'en', IN: 'en', SG: 'en', ZA: 'en',
+  GB: 'en-GB', IE: 'en-GB',
+  DE: 'de', AT: 'de',
+  FR: 'fr', BE: 'fr',
+  PL: 'pl', IT: 'it', ES: 'es', NL: 'nl', PT: 'pt',
+  CZ: 'cs', SK: 'sk', HU: 'hu', RO: 'ro', BG: 'bg', HR: 'hr', SI: 'sl',
+  LT: 'lt', LV: 'lv', EE: 'et',
+  FI: 'fi', SE: 'sv', NO: 'nb', DK: 'da',
+  GR: 'el', TR: 'tr', IL: 'he',
+  JP: 'ja', KR: 'ko', CN: 'zh', HK: 'zh-HK', TW: 'zh-TW',
+  TH: 'th', ID: 'id', MY: 'ms', VN: 'vi',
+  SA: 'ar', AE: 'ar', EG: 'ar',
+  BR: 'pt-BR', MX: 'es-419', AR: 'es-419', CO: 'es-419',
+}
 
 const formatPrice = (service) => {
   if (!service?.amount) return service?.price ?? ''
@@ -12,10 +30,21 @@ const formatPrice = (service) => {
 }
 
 const PaymentForm = ({ service, onSuccess, onError }) => {
-  const stripe   = useStripe()
-  const elements = useElements()
+  const stripe       = useStripe()
+  const elements     = useElements()
   const [processing, setProcessing] = useState(false)
   const [localError, setLocalError] = useState(null)
+  const lastCountry  = useRef(null)
+
+  const handleChange = useCallback(async (event) => {
+    const country = event.value?.billingDetails?.address?.country
+    if (!country || country === lastCountry.current || !elements) return
+    lastCountry.current = country
+    const locale = COUNTRY_TO_LOCALE[country]
+    if (locale) {
+      await elements.update({ locale })
+    }
+  }, [elements])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -56,6 +85,7 @@ const PaymentForm = ({ service, onSuccess, onError }) => {
             billingDetails: { address: { country: 'UA' } },
           },
         }}
+        onChange={handleChange}
       />
 
       {localError && (

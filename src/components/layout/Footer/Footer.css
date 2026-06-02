@@ -65,8 +65,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--graphite-700);
   border-radius: var(--r-sm);
   color: var(--graphite-400);
@@ -152,5 +152,12 @@
   .footer__inner {
     grid-template-columns: 1fr;
     gap: var(--sp-10);
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    gap: var(--sp-2);
+    text-align: center;
+    padding-block: var(--sp-5);
   }
 }
