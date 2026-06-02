@@ -10,7 +10,7 @@
 # ── Local dev (netlify dev) ───────────────────────────────────────────────────
 [dev]
   framework = "vite"
-  envFile   = ".env.local"   # load Stripe keys for local function testing
+  envFile   = ".env"
   port      = 8888
 
 # ── Rewrite /api/* → Netlify Functions (keeps frontend code unchanged) ────────

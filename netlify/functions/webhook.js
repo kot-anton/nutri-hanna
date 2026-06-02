@@ -1,9 +1,35 @@
 import Stripe from 'stripe'
+import nodemailer from 'nodemailer'
 
-// Stripe instance at module level — reused across warm Lambda invocations.
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-06-20',
 })
+
+const sendOwnerEmail = async ({ packageName, amountFormatted, currency, paymentId, customerName, receiptEmail }) => {
+  const user    = process.env.OWNER_EMAIL
+  const pass    = process.env.OWNER_EMAIL_APP_PASSWORD
+  if (!user || !pass) {
+    console.warn('[webhook] OWNER_EMAIL or OWNER_EMAIL_APP_PASSWORD not set — skipping email')
+    return
+  }
+
+  const mailer = nodemailer.createTransport({ service: 'gmail', auth: { user, pass } })
+
+  await mailer.sendMail({
+    from:    user,
+    to:      user,
+    subject: `New payment received — ${packageName}`,
+    text: [
+      'A payment was successfully completed.',
+      '',
+      `Package:    ${packageName}`,
+      `Amount:     ${amountFormatted} ${currency}`,
+      `Payment ID: ${paymentId}`,
+      `Customer:   ${customerName}`,
+      `Email:      ${receiptEmail}`,
+    ].join('\n'),
+  })
+}
 
 export const handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -16,8 +42,8 @@ export const handler = async (event) => {
     return { statusCode: 200, body: JSON.stringify({ received: true }) }
   }
 
-  // Netlify can base64-encode binary bodies; decode back to the exact raw bytes
-  // that Stripe signed — otherwise signature verification fails.
+  // Netlify can base64-encode binary bodies — decode back to the exact raw bytes
+  // that Stripe signed, otherwise signature verification fails.
   const rawBody = event.isBase64Encoded
     ? Buffer.from(event.body, 'base64')
     : event.body
@@ -34,15 +60,38 @@ export const handler = async (event) => {
 
   if (stripeEvent.type === 'payment_intent.succeeded') {
     const intent = stripeEvent.data.object
-    console.log(
-      `[webhook] payment_intent.succeeded — id: ${intent.id}`,
-      `package: ${intent.metadata.packageId}`,
-      `amount: ${intent.amount / 100} ${intent.currency.toUpperCase()}`
-    )
-    // TODO: send confirmation email, update database, trigger fulfillment
+    const packageName     = intent.metadata.packageName ?? intent.metadata.packageId ?? 'Unknown'
+    const amountFormatted = (intent.amount / 100).toFixed(2)
+    const currency        = intent.currency.toUpperCase()
+
+    console.log(`[webhook] payment_intent.succeeded — id: ${intent.id}, package: ${packageName}, amount: ${amountFormatted} ${currency}`)
+
+    let customerName = 'not provided'
+    if (intent.latest_charge) {
+      try {
+        const charge = await stripe.charges.retrieve(intent.latest_charge)
+        customerName = charge.billing_details?.name ?? 'not provided'
+      } catch (err) {
+        console.warn('[webhook] Could not retrieve charge:', err.message)
+      }
+    }
+
+    try {
+      await sendOwnerEmail({
+        packageName,
+        amountFormatted,
+        currency,
+        paymentId:     intent.id,
+        customerName,
+        receiptEmail:  intent.receipt_email ?? 'not provided',
+      })
+      console.log('[webhook] Owner notification email sent')
+    } catch (err) {
+      // Log but don't fail the webhook — Stripe must receive 200 quickly
+      console.error('[webhook] Failed to send owner email:', err.message)
+    }
   }
 
-  // Respond quickly — Stripe retries if we take > ~30 s
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json' },
