@@ -16,6 +16,7 @@
   box-shadow: 0 1px 0 var(--color-border-subtle);
 }
 
+
 /* ── INNER ──────────────────────────────────────────────────────── */
 
 .header__inner {
@@ -139,14 +140,71 @@
 
 .header__mobile {
   position: fixed;
-  inset: var(--header-height) 0 0;
+  inset: 0;
   background: var(--cream);
-  z-index: calc(var(--z-sticky) - 1);
+  z-index: 150;
   display: flex;
   flex-direction: column;
-  padding: var(--sp-10) var(--sp-6);
+  overflow-y: auto;
+  animation: slideDown 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.header__mobile-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--section-px);
+  height: var(--header-height);
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.header__mobile-logo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  gap: 3px;
+}
+
+.header__mobile-logo-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-regular);
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+.header__mobile-logo-sub {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.header__mobile-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--color-text-primary);
+  border-radius: var(--r-full);
+  transition: background var(--t-fast), color var(--t-fast);
+}
+
+.header__mobile-close:hover {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.header__mobile-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--sp-6) var(--section-px) var(--sp-10);
   gap: var(--sp-8);
-  animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .header__mobile-nav {
@@ -164,10 +222,16 @@
   padding: var(--sp-4) 0;
   border-bottom: 1px solid var(--color-border-subtle);
   letter-spacing: var(--ls-tight);
+  transition: color var(--t-fast), padding-left var(--t-normal);
 }
 
 .header__mobile-link:last-child {
   border-bottom: none;
+}
+
+.header__mobile-link:hover {
+  color: var(--color-primary);
+  padding-left: var(--sp-2);
 }
 
 .header__mobile-cta {
@@ -180,4 +244,9 @@
   .header__nav,
   .header__cta { display: none; }
   .header__burger { display: flex; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
