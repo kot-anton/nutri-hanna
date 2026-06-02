@@ -10,6 +10,12 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+<<<<<<< Updated upstream
+=======
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^5.9.0",
+    "nodemailer": "^8.0.10",
+>>>>>>> Stashed changes
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

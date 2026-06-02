@@ -65,14 +65,13 @@ const Footer = () => {
             ))}
           </ul>
         </nav>
-
       </div>
 
       <div className="footer__bottom">
         <p className="footer__copy">© {year} Hanna Nutrition. Все права защищены.</p>
         <p className="footer__dev">
           Developed by{' '}
-          <a href="https://github.com/Blockchain-Country" target="_blank" rel="noopener noreferrer" className="footer__dev-link">
+          <a href="https://github.com/kot-anton/nutri-hanna" target="_blank" rel="noopener noreferrer" className="footer__dev-link">
             Anton Ishchenko
           </a>
         </p>
